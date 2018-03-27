@@ -1,0 +1,21 @@
+extends ../layouts/default
+
+block content
+	.container: .row: .col-sm-10.col-sm-offset-1.col-md-8.col-md-offset-2
+		article
+			if !data.events
+				h2 Invalid events.
+			else
+				header
+					h1= data.events.title
+					.row
+						.col-sm-10.col-md-6
+							if data.events.image.exists
+								.image-wrap: img(id="postimage" src='/uploads/images/events/' + data.events.image.filename).img-responsive
+						.col-sm-10.col-md-6
+							h3= data.events._.when.format('MMM DD, YYYY')
+							h4= data.events._.when.format('HH:MM')
+							h4= data.events.where
+					.row
+						= data.events.Detail
+

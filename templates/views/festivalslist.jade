@@ -1,0 +1,52 @@
+extends ../layouts/default
+
+mixin festivals(festival)
+	article(data-ks-editable=editable(user, { list: 'Festivals'})).media
+		.media-left
+			a(href='/festivals/' + festival.slug)
+				if festival.image.exists
+					img(src='/uploads/images/festival/' + festival.image.filename).media-object.listimage
+				else
+					img(src="http://placehold.it/140x120").media-object
+		.media-body
+			h3.media-heading
+				a(href='/festivals/' + festival.slug)= festival.title
+
+block intro
+	.container
+		h1 ಹಬ್ಬಗಳು
+
+block content
+	.container: .row
+		.col-sm-8.col-md-9
+			if data.festivals.results.length
+				if data.festivals.totalPages > 1
+					h4.text-weight-normal Showing 
+						strong #{data.festivals.first}
+						|  to 
+						strong #{data.festivals.last}
+						|  of 
+						strong #{data.festivals.total}
+						|  festivals.
+				else
+					h4.text-weight-normal Showing #{utils.plural(data.festivals.results.length, '* festivals')}.
+				.blog
+					each festival in data.festivals.results
+						+festivals(festival)
+				
+				if data.festivals.totalPages > 1
+					ul.pagination
+						if data.festivals.previous
+							li: a(href='?festivals=' + data.festivals.previous): span.glyphicon.glyphicon-chevron-left
+						else
+							li.disabled: a(href='?festivals=' + 1): span.glyphicon.glyphicon-chevron-left
+						each p, i in data.festivals.pages
+							li(class=data.festivals.currentPage == p ? 'active' : null)
+								a(href='?festivals=' + (p == '...' ? (i ? data.festivals.totalPages : 1) : p ))= p
+						if data.festivals.next
+							li: a(href='?festivals=' + data.festivals.next): span.glyphicon.glyphicon-chevron-right
+						else
+							li.disabled: a(href='?festivals=' + data.festivals.totalPages): span.entypo.glyphicon.glyphicon-chevron-right
+			else
+				h3.text-muted There are no festivals yet.
+	

@@ -1,0 +1,91 @@
+include ../mixins/flash-messages
+
+doctype html
+html
+
+	//- HTML HEADER
+	head
+		meta(charset="utf-8")
+		meta(name="viewport", content="width=device-width, initial-scale=1.0")
+		meta(http-equiv="X-UA-Compatible" content="IE=edge")
+		meta(name="description=" content="kalikamba temple hassan website provides temple history, poojas, and festival information and news and events in vishwakarma community")
+		meta(name="keywords", content="kalikambatemplehassan,kalikambatemple,kalikamba, kalikamba hassan,vishwakarma hassan,temple hassan,temple")
+
+		block meta
+
+		title= title || "kalikamba Temple Hassan - Hassan, karnamtaka, kalikambatemple news,kalikambatemple events,kalikamba stotras, vishwakarma hassan,kalikambatemplehassan"
+		
+		link(rel="shortcut icon", href="/favicon.ico", type="image/x-icon")
+
+		link(href="/styles/themes/Cerulean.min.css", rel="stylesheet")
+		if user && user.canAccessKeystone
+			link(href="/keystone/styles/content/editor.min.css", rel="stylesheet")
+
+	
+			script(src="//cdn.jsdelivr.net/html5shiv/3.7.3/html5shiv.js")
+			script(src="//cdn.jsdelivr.net/respond/1.4.2/respond.min.js")
+
+		block css
+
+		block head
+
+	//- HTML BODY
+	body
+
+		//- HEADER
+		#header
+			div(id="navigation" role="navigation").navbar.navbar-default.navbar-fixed-top
+				.container-fluid
+					.navbar-header
+							button.navbar-toggle(type='button', data-toggle='collapse', data-target='.navbar-collapse')
+								span.sr-only Toggle navigation
+								span.icon-bar 
+								span.icon-bar
+								span.icon-bar
+							a(href='/' class="logo")
+								img(src="/images/logo.PNG" class="img-circle") 
+								span ಕಾಳಿಕಾಂಬ
+						.collapse.navbar-collapse
+							.container
+								ul.nav.navbar-nav.navbar-left
+									each link in navLinks
+										if link.dropdown
+											li.dropdown
+												a.dropdown-toggle(href="#", data-toggle="dropdown", role="button", aria-haspopup="true", aria-expanded="false")
+													= link.label 
+													span.caret
+												ul.dropdown-menu
+													each item in link.dropdown
+														li(class=(section == item.key ? 'active' : null)): a(href=item.href)= item.label		
+										else
+											li(class=(section == link.key ? 'active' : null)): a(href=link.href)= link.label
+								ul.nav.navbar-nav.navbar-right
+									if user
+										if user.canAccessKeystone
+											li: a(href='/keystone') Admin UI
+										li: a(href='/keystone/signout') Sign Out
+									else
+										li: a(href='/keystone/signin') Sign In
+
+		//- BOD
+		#body
+			block Bigbanners
+			.container
+				block intro
+				+flash-messages(messages)
+				block content
+
+		//- FOOTER
+		.container: #footer
+
+			p Powered by <a href="#" target="_blank">Kiran cm</a>.
+
+
+		//- JAVASCRIPT
+		script(src='/js/jquery/jquery-1.11.3.min.js')
+
+		script(src='/js/bootstrap/bootstrap-3.3.5.min.js')
+		if user && user.canAccessKeystone
+			script(src='/keystone/js/content/editor.js')
+
+		block js

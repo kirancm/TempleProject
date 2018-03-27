@@ -1,0 +1,106 @@
+extends ../layouts/default
+
+mixin post(post)
+	div(class="col-xs-12 col-sm-6 col-md-4")
+		.thumbnail.customethumnail
+			a(href='/blog/post/' + post.slug)
+				img(src='/uploads/images/' + post.image.filename).homepostimage
+				h4: = post.title
+
+mixin events(events)
+	div(class="col-xs-12 col-sm-12 col-md-6")
+		article(data-ks-editable=editable(user, { list: 'Events'})).media
+			.media-left
+				a(href='/events/' + events.slug)
+					.calendar
+						span(class="event-month")= events._.when.format('MMM')
+						span(class="event-day")= events._.when.format('DD')
+			.media-body
+				h3.media-heading
+					a(href='/events/' + events.slug)= events.title
+				if events.where
+					p.text-muted.text-small
+						= events.where
+
+mixin Articleslist()
+	.row
+		h3 Top articles
+		if data.posts.length
+			each post in data.posts				
+				+post(post)
+		else
+			h3.text-muted There are no posts yet.
+
+
+mixin EventList()
+	.row.customcomponant
+		h3 Events
+		if data.events.length
+			each events in data.events
+				+events(events)
+		else
+			h3.text-muted There are no events yet.
+
+mixin Nityapanchangas()
+	.row.nityapanchangas
+		h3 ನಿತ್ಯ ಪಂಚಾಂಗ
+		if data.nityapanchangas
+			header
+				h6= data.nityapanchangas._.date.format('MMM DD, YYYY')
+				table(class="table table-condensed")
+					tr
+						td ತಿಥಿ
+						td= data.nityapanchangas.suryodaya
+					tr
+						td ವಾರ
+						td= data.nityapanchangas.samvatsara
+					tr
+						td ನಕ್ಷತ್ರ
+						td= data.nityapanchangas.ayatana
+					tr
+						td ರಾಹುಕಾಲ
+						td= data.nityapanchangas.rutu
+					tr
+						td ಯಮಗಂಡಕಾಲ
+						td= data.nityapanchangas.maasa
+
+
+mixin MOD()
+	.row
+		if data.mod
+			h3 ಸುಭಾಷಿತ
+			.mod
+				.row
+					.message
+						!= data.mod.message
+						.author
+							= data.mod.author
+
+
+block Bigbanners
+	.image-wrap: img(id="bigbannerimage" src='/images/Banner.jpg').img-responsive
+
+block content
+	.container
+		.row
+			.col-md-3.col-md-offset-1.col-md-push-8.col-sm-4.col-xs-10.col-xs-offset-1
+				+MOD()
+				+Nityapanchangas()
+			.col-md-8.col-md-pull-4.col-sm-8.col-xs-12
+				.col-md-12
+					+Articleslist()
+				.col-md-12
+					+EventList()
+	audio(preload="auto" id="id12" controls="controls" autoplay="true" style="background-color: transparent;opacity: 0.9;width: 47px;background-position: left;" loop="loop" src="/audio/omm.mp3")
+				
+				
+				
+				
+			
+		
+				
+
+
+
+		
+		

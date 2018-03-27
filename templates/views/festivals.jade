@@ -1,0 +1,17 @@
+extends ../layouts/default
+
+block content
+	.container: .row: .col-sm-10.col-sm-offset-1.col-md-8.col-md-offset-2
+		article
+			if !data.festivals
+				h2 Invalid festival.
+			else
+				header
+					h1= data.festivals.title
+					.row
+						.col-sm-10.col-md-6
+							if data.festivals.image.exists
+								.image-wrap: img(id="ರಂಗಪೂಜೆ" src='/uploads/images/Poojas/' + data.festivals.image.filename).img-responsive
+					.row
+						!= data.festivals.description
+

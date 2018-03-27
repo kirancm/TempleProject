@@ -1,0 +1,40 @@
+extends ../layouts/default
+
+block css
+	link(rel="stylesheet", href="/js/fancybox/jquery.fancybox.css")
+				
+block content
+	.page-header
+		h1 Gallery
+
+	if galleries.length
+		each gallery, i in galleries
+			h3
+				| #{gallery.name} 
+				small.text-muted= gallery._.publishedDate.format('Do MMM YYYY')
+			
+			.row
+				each image, i in gallery.image
+					.col-xs-6.col-sm-4.col-md-2(style="margin-bottom: 30px;")
+						a(href='/uploads/images/' + image.filename, title=gallery.name + ' image ' + (i+1), rel=gallery.key).gallery-image
+							img(id="galleryimage" src='/uploads/images/' + image.filename, alt=gallery.name + ' image ' + (i+1)).img-thumbnail
+		
+	else
+		.jumbotron.text-center
+			h3(style="margin-bottom:0;margin-top:0;") There are no albums yet.
+
+
+block js
+	script(src="/js/fancybox/jquery.fancybox.pack.js")
+	script.
+		jQuery(function($) {
+			$('.gallery-image').fancybox({
+				prevEffect: 'none',
+				nextEffect: 'none',
+				closeBtn: false,
+				helpers: {
+					titl: {},
+					buttons: {}
+				}
+			});
+		});

@@ -1,0 +1,21 @@
+extends ../layouts/default
+
+block content
+	.container: .row: .col-sm-10.col-sm-offset-1.col-md-8.col-md-offset-2
+		article
+			if !data.poojas
+				h2 Invalid pooja.
+			else
+				header
+					h1= data.poojas.title
+					.row
+						.col-sm-10.col-md-6
+							if data.poojas.image.exists
+								.image-wrap: img(id="ರಂಗಪೂಜೆ" src='/uploads/images/Poojas/' + data.poojas.image.filename).img-responsive
+					.row
+						!= data.poojas.requirments
+					.row
+						!= data.poojas.description
+					h4 Price : 
+						span= data.poojas.price
+

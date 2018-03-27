@@ -1,0 +1,54 @@
+extends ../layouts/default
+
+block content
+	.container: .row: .col-sm-10.col-sm-offset-1.col-md-8.col-md-offset-2
+		article
+			if !data.nityapanchangas
+				h2 not available.
+			else
+				header
+					h1 Nityapanchangas
+					h4= data.nityapanchangas._.date.format('MMM DD, YYYY')
+					.col-md-6.col-xs-8
+						table(class="table table-bordered")
+							tr
+								td ಸೂರ್ಯೋದಯ
+								td= data.nityapanchangas.suryodaya
+							tr
+								td ಸಂವಸ್ತರ 
+								td= data.nityapanchangas.samvatsara
+							tr
+								td ಆಯತನ
+								td= data.nityapanchangas.ayatana
+							tr
+								td ಋತು
+								td= data.nityapanchangas.rutu
+							tr
+								td ಮಾಸ
+								td= data.nityapanchangas.maasa
+							tr
+								td ಪಕ್ಷ 
+								td= data.nityapanchangas.paksha
+							tr
+								td ತಿಥಿ
+								td= data.nityapanchangas.tithi
+							tr
+								td ವಾರ
+								td= data.nityapanchangas.vaara
+							tr
+								td ನಕ್ಷತ್ರ
+								td= data.nityapanchangas.nakshatra
+							tr
+								td ಯೋಗ
+								td= data.nityapanchangas.yoga
+							tr
+								td ಕರ್ಣ
+								td= data.nityapanchangas.karana
+							tr
+								td ರಾಹುಕಾಲ
+								td= data.nityapanchangas.rahukaala
+							tr
+								td ಯಮಗಂಡಕಾಲ
+								td= data.nityapanchangas.yamagandakala
+
+

@@ -1,0 +1,52 @@
+extends ../layouts/default
+
+mixin pooja(pooja)
+	article(data-ks-editable=editable(user, { list: 'Poojas'})).media
+		.media-left
+			a(href='/poojas/' + pooja.slug)
+				if pooja.image.exists
+					img(src='/uploads/images/Poojas/' + pooja.image.filename).media-object.listimage
+				else
+					img(src="http://placehold.it/140x120").media-object
+		.media-body
+			h3.media-heading
+				a(href='/poojas/' + pooja.slug)= pooja.title
+
+block intro
+	.container
+		h1 Poojas
+
+block content
+	.container: .row
+		.col-sm-8.col-md-9
+			if data.poojas.results.length
+				if data.poojas.totalPages > 1
+					h4.text-weight-normal Showing 
+						strong #{data.poojas.first}
+						|  to 
+						strong #{data.poojas.last}
+						|  of 
+						strong #{data.poojas.total}
+						|  poojas.
+				else
+					h4.text-weight-normal Showing #{utils.plural(data.poojas.results.length, '* poojas')}.
+				.blog
+					each pooja in data.poojas.results
+						+pooja(pooja)
+				
+				if data.poojas.totalPages > 1
+					ul.pagination
+						if data.poojas.previous
+							li: a(href='?poojas=' + data.poojas.previous): span.glyphicon.glyphicon-chevron-left
+						else
+							li.disabled: a(href='?poojas=' + 1): span.glyphicon.glyphicon-chevron-left
+						each p, i in data.poojas.pages
+							li(class=data.poojas.currentPage == p ? 'active' : null)
+								a(href='?poojas=' + (p == '...' ? (i ? data.poojas.totalPages : 1) : p ))= p
+						if data.poojas.next
+							li: a(href='?poojas=' + data.poojas.next): span.glyphicon.glyphicon-chevron-right
+						else
+							li.disabled: a(href='?poojas=' + data.poojas.totalPages): span.entypo.glyphicon.glyphicon-chevron-right
+			else
+				h3.text-muted There are no poojas yet.
+	

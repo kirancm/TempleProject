@@ -1,0 +1,25 @@
+extends ../layouts/default
+
+mixin committee(committee)
+	div(class="col-sm-6 col-md-3")
+		.thumbnail.customethumnail
+			a(href='/committees/' + committee.slug)
+				if committee.image.exists
+					img(src='/uploads/images/Committees/' + committee.image.filename)
+				else
+					img(src="http://placehold.it/140x120")
+				h4: = committee.title
+
+block intro
+	.container
+		h1 committees
+
+block content
+	.container
+		.row
+			if data.committees.length
+				each committee in data.committees				
+					+committee(committee)
+			else
+				h3.text-muted There are no committees yet.
+	

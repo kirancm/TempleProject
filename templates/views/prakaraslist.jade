@@ -1,0 +1,52 @@
+extends ../layouts/default
+
+mixin prakaras(prakara)
+	article(data-ks-editable=editable(user, { list: 'prakaras'})).media
+		.media-left
+			a(href='/prakaras/' + prakara.slug)
+				if prakara.image.exists
+					img(src='/uploads/images/prakara/' + prakara.image.filename).media-object.listimage
+				else
+					img(src="http://placehold.it/140x120").media-object
+		.media-body
+			h3.media-heading
+				a(href='/prakaras/' + prakara.slug)= prakara.title
+
+block intro
+	.container
+		h1 ಹಬ್ಬಗಳು
+
+block content
+	.container: .row
+		.col-sm-8.col-md-9
+			if data.prakaras.results.length
+				if data.prakaras.totalPages > 1
+					h4.text-weight-normal Showing 
+						strong #{data.prakaras.first}
+						|  to 
+						strong #{data.prakaras.last}
+						|  of 
+						strong #{data.prakaras.total}
+						|  prakaras.
+				else
+					h4.text-weight-normal Showing #{utils.plural(data.prakaras.results.length, '* prakaras')}.
+				.blog
+					each prakara in data.prakaras.results
+						+prakaras(prakara)
+				
+				if data.prakaras.totalPages > 1
+					ul.pagination
+						if data.prakaras.previous
+							li: a(href='?prakaras=' + data.prakaras.previous): span.glyphicon.glyphicon-chevron-left
+						else
+							li.disabled: a(href='?prakaras=' + 1): span.glyphicon.glyphicon-chevron-left
+						each p, i in data.prakaras.pages
+							li(class=data.prakaras.currentPage == p ? 'active' : null)
+								a(href='?prakaras=' + (p == '...' ? (i ? data.prakaras.totalPages : 1) : p ))= p
+						if data.prakaras.next
+							li: a(href='?prakaras=' + data.prakaras.next): span.glyphicon.glyphicon-chevron-right
+						else
+							li.disabled: a(href='?prakaras=' + data.prakaras.totalPages): span.entypo.glyphicon.glyphicon-chevron-right
+			else
+				h3.text-muted There are no prakaras yet.
+	

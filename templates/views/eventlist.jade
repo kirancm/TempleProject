@@ -1,0 +1,58 @@
+extends ../layouts/default
+
+mixin events(events)
+	article(data-ks-editable=editable(user, { list: 'Events'})).media
+		.media-left
+			a(href='/events/' + events.slug)
+				if events.image.exists
+					img(src='/uploads/images/events/' + events.image.filename).media-object.listimage
+				else
+					img(src="http://placehold.it/140x120").media-object
+		.media-body
+			h3.media-heading
+				a(href='/events/' + events.slug)= events.title
+			if events.when
+				p.text-small
+					when= events._.when.format('MMMM Do, YYYY')
+			if events.where
+				p.text-muted.text-small
+					= events.where
+
+block intro
+	.container
+		h1 Events
+
+block content
+	.container: .row
+		.col-sm-8.col-md-9
+			if data.events.results.length
+				if data.events.totalPages > 1
+					h4.text-weight-normal Showing 
+						strong #{data.events.first}
+						|  to 
+						strong #{data.events.last}
+						|  of 
+						strong #{data.events.total}
+						|  events.
+				else
+					h4.text-weight-normal Showing #{utils.plural(data.events.results.length, '* post')}.
+				.blog
+					each events in data.events.results
+						+events(events)
+				
+				if data.events.totalPages > 1
+					ul.pagination
+						if data.events.previous
+							li: a(href='?events=' + data.events.previous): span.glyphicon.glyphicon-chevron-left
+						else
+							li.disabled: a(href='?events=' + 1): span.glyphicon.glyphicon-chevron-left
+						each p, i in data.events.pages
+							li(class=data.events.currentPage == p ? 'active' : null)
+								a(href='?events=' + (p == '...' ? (i ? data.events.totalPages : 1) : p ))= p
+						if data.events.next
+							li: a(href='?events=' + data.events.next): span.glyphicon.glyphicon-chevron-right
+						else
+							li.disabled: a(href='?events=' + data.events.totalPages): span.entypo.glyphicon.glyphicon-chevron-right
+			else
+				h3.text-muted There are no posts yet.
+	
